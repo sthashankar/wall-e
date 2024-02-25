@@ -58,7 +58,7 @@ class Grid implements GridInterface, DirectionInterface
                 break;
         }
         throw_if(
-            $coordinate[0] > $this->xaxis || $coordinate[0] <= 0 || $coordinate[1] > $this->yaxis || $coordinate[1] <= 0,
+            $coordinate[0] >= $this->xaxis || $coordinate[0] <= 0 || $coordinate[1] >= $this->yaxis || $coordinate[1] <= 0,
             new Exception('Close by/Out of boundary')
         );
         $this->current_location = $this->grid[$coordinate[0]][$coordinate[1]];
