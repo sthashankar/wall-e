@@ -6,6 +6,7 @@ use Exception;
 use Lyka\Robot\Contracts\DirectionInterface;
 use Lyka\Robot\Contracts\GridInterface;
 use Lyka\Robot\Enums\Direction;
+use Throwable;
 
 class Grid implements GridInterface, DirectionInterface
 {
@@ -41,6 +42,11 @@ class Grid implements GridInterface, DirectionInterface
         return $this;
     }
 
+    /**
+     * @param Direction $direction
+     * @return $this
+     * @throws Throwable Unable to move in boundary.
+     */
     public function move(Direction $direction): static
     {
         switch ($direction) {
@@ -65,26 +71,49 @@ class Grid implements GridInterface, DirectionInterface
         return $this;
     }
 
+    /**
+     * @return array
+     */
     public function getLocation(): array
     {
         return $this->current_location;
     }
 
+    /**
+     * @param int $x
+     * @param int $y
+     * @return int[]
+     */
     public function getEast(int $x, int $y)
     {
         return [$x + 1, $y];
     }
 
+    /**
+     * @param int $x
+     * @param int $y
+     * @return int[]
+     */
     public function getWest(int $x, int $y)
     {
         return [$x - 1, $y];
     }
 
+    /**
+     * @param int $x
+     * @param int $y
+     * @return int[]
+     */
     public function getNorth(int $x, int $y)
     {
         return [$x, $y + 1];
     }
 
+    /**
+     * @param int $x
+     * @param int $y
+     * @return int[]
+     */
     public function getSouth(int $x, int $y)
     {
         return [$x, $y - 1];
