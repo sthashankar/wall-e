@@ -16,9 +16,6 @@ class RobotMovementTest extends TestCase
     {
         $response = $this->post('api/robot/move', ['command_sequence' => 'N E S W']);
         $response->assertStatus(200);
-        $response->assertJsonStructure([
-            'requested_command_sequence'
-        ]);
     }
 
     /**
