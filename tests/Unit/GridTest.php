@@ -73,6 +73,24 @@ class GridTest extends TestCase
         $grid->move(Direction::WEST);
     }
 
+    public function test_out_of_border_y_axis()
+    {
+        $grid = new Grid();
+        $this->expectException(Exception::class);
+        $grid->setCurrentLocation(9, 9);
+        $grid->move(Direction::NORTH);
+    }
+
+    public function test_set_current_location_out_of_boarder()
+    {
+        $grid = new Grid();
+        $this->expectException(Exception::class);
+        $grid->setCurrentLocation(11, 3);
+        $grid->move(Direction::NORTH);
+    }
+
+
+
     /*
      * set as provider
      * */

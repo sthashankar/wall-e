@@ -35,9 +35,14 @@ class Grid implements GridInterface, DirectionInterface
      * @param int $x
      * @param int $y
      * @return $this
+     * @throws Throwable Unable to set current location.
      */
     public function setCurrentLocation(int $x, int $y): static
     {
+        throw_if(
+            $x >= $this->xaxis || $x <= 0 || $y >= $this->yaxis || $y <= 0,
+            new Exception('Unable to set current location on border or outside of grid')
+        );
         $this->current_location = $this->grid[$x][$y];
         return $this;
     }
