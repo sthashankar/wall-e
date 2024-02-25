@@ -52,6 +52,22 @@ class RobotMovementTest extends TestCase
     }
 
     /**
+     * @dataProvider providerOutOfBoundCommandSequence
+     * @return void
+     */
+    public function test_command_sequence_move_out_of_boundary($sequence, $current_location)
+    {
+        $response = $this->post('api/robot/move', ['command_sequence' => $sequence]);
+        $response->assertStatus(400);
+        $response->assertJsonStructure([
+            'error'
+        ]);
+        $response_data = $response->getOriginalContent();
+        $this->assertEquals('Unable to move to boundary or beyond', $response_data['error']);
+        $this->assertEquals($current_location, $response_data['current_location']);
+    }
+
+    /**
      * @return array[]
      */
     public static function providerWrongCommandSequence(): array
@@ -77,6 +93,22 @@ class RobotMovementTest extends TestCase
             ['N E N E N E N E', [5, 5]],
             ['N N N N E E E E W', [4, 5]],
             ['N N N N E E E E W', [4, 5]],
+        ];
+
+    }
+
+
+    /**
+     * @return array[]
+     */
+    public static function providerOutOfBoundCommandSequence(): array
+    {
+
+        return [
+            ['W', [1, 1]],
+            ['S', [1, 1]],
+            ['N N N N N N N N N N', [1, 9]],
+            ['N N N N W', [1, 5]],
         ];
 
     }

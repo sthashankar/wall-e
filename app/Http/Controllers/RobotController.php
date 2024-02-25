@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use Exception;
 use Illuminate\Http\Request;
 use Log;
 use Lyka\Robot\DirectionService;
@@ -26,10 +27,20 @@ class RobotController extends Controller
         $directionService = new DirectionService();
         $directionList = $directionService->convertCommandSequenceToDirection($request->input('command_sequence'));
 
-        $grid = new Grid();
-        foreach ($directionList as $_direction) {
-            $grid->move($_direction);
+        try {
+            $grid = new Grid();
+            foreach ($directionList as $_direction) {
+                $grid->move($_direction);
+            }
+        } catch (Exception $exception) {
+            Log::debug($exception->getMessage(), ['request' => $request->toArray()]);
+            return response()->json([
+                'error' => 'Unable to move to boundary or beyond',
+                'input_sequence' => $request->input('command_sequence'),
+                'robot_location' => $grid->getLocation()
+            ], 400);
         }
+
         return response()->json([
             'input_sequence' => $request->input('command_sequence'),
             'robot_location' => $grid->getLocation()
