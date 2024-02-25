@@ -14,3 +14,35 @@ This is a part of the test.
    able to see `/var/www/html` on your terminal. Run `ls` and you should be able to see the project file.
 4. Make sure port 80 (web) and 3306 (mysql) is free. You would be able to access the project on [localhost]( Server
    running on [http://localhost:80])
+
+## Testing
+
+Using PHPUnit Test
+
+1. Go to the terminal and run `docker exec -it walle-container bash`
+2. Run `php artisan test` to run all the test
+3. Run `php artisan test --filter RobotMovementTest`
+
+Using Curl
+
+```
+curl --location 'http://localhost/api/robot/move' \
+--header 'Content-Type: application/json' \
+--data '{
+"command_sequence":"N N E E W"
+}'
+```
+
+## Nomenclature:
+
+- normal variable and test class function name are using snake case
+- class variable and function are using camel case
+- temporary variables have '_' after $
+
+## Limitations
+
+1. The robot does not hold memory of past state at this time. You can imagine it as stateless machine.
+
+## Future ToDo List
+
+1. Make the robot to hold last location using cache/database
