@@ -18,14 +18,14 @@ class GridMockTest extends TestCase
         //Arrange
         $mock = Mockery::mock(GridInterface::class);
         $mock->expects('getLocation')
-            ->andReturn('01');
+            ->andReturn([0, 1]);
 
         //Act
         $this->instance(GridInterface::class, $mock);
         $grid = App::make(GridInterface::class);
 
         //Assert
-        $this->assertEquals('01', $grid->getLocation());
+        $this->assertEquals([0, 1], $grid->getLocation());
 
     }
 

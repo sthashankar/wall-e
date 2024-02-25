@@ -20,8 +20,8 @@ interface GridInterface
     public function move(Direction $direction): static;
 
     /**
-     * @return string
+     * @return array
      */
-    public function getLocation(): string;
+    public function getLocation(): array;
 
 }
