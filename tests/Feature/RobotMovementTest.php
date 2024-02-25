@@ -38,6 +38,23 @@ class RobotMovementTest extends TestCase
     }
 
     /**
+     * @dataProvider providerRightCommandSequence
+     * @return void
+     */
+    public function test_command_sequence_move($sequence, $output)
+    {
+        $response = $this->post('api/robot/move', ['command_sequence' => $sequence]);
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'input_sequence',
+            'robot_location'
+        ]);
+        $response_data = $response->getOriginalContent();
+        $this->assertEquals($sequence, $response_data['input_sequence']);
+        $this->assertEquals($output, $response_data['robot_location']);
+    }
+
+    /**
      * @return array[]
      */
     public static function providerWrongCommandSequence(): array
@@ -48,6 +65,21 @@ class RobotMovementTest extends TestCase
                 'T E S T',
                 'N E S  W',
             ]
+        ];
+
+    }
+
+    /**
+     * @return array[]
+     */
+    public static function providerRightCommandSequence(): array
+    {
+
+        return [
+            ['N N N N E E E E', [5, 5]],
+            ['N E N E N E N E', [5, 5]],
+            ['N N N N E E E E W', [4, 5]],
+            ['N N N N E E E E W', [4, 5]],
         ];
 
     }
